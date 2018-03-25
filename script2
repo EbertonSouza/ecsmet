@@ -1,0 +1,9 @@
+# salvando um gráfico da sequência de 1 a 100 em um arquivo pdf
+pdf("script1.pdf") # cria e abre um arquivo pdf
+plot(1:100,xlab=("Horário"),ylab="Temperatura ", type="l",xlim = c(0,100),ylim = c(0,100), main="Salvando em pdf",col="red",lwd="2")                                                                                 
+#plot cria o grafico                                                                                       
+# definição de escala dos eixos xlim,ylim                                                               
+#nome dos eixos xlab,ylab                                                                                  
+#titulo main                                                                                               
+#cor da linha col# espessura da linha lwd
+dev.off() #fecha o arquivo pdf
