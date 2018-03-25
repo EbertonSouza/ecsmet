@@ -1,0 +1,16 @@
+par(bg="gray")
+# cor de fundo antes de fazer o grafico
+dados <- read.csv("teste.csv", col.names = c("codigo_estacao","data","hora","temp_inst","temp_max","temp_min","umid_inst","umid_max","umid_min","pto_orvalho_inst","pto_orvalho_max","pto_orvalho_min","pressao","pressao_max","pressao_min","vento_direcao","vento_vel", "vento_rajada","radiacao","precipitacao"), header = F) 
+plot(temp_max ~ hora,xlab=("Horário UTC de 10/03/2018 "),ylab="Temperatura °C", data = dados, type="l",xlim = c(0,24),ylim = c(17,35),main="Temperaturas na Estação Automática: Bento Gonçalves-RS",col="red",lwd="2") 
+# plotar coluna em 'b' em relação a 'a'
+# definição de eixos xlim,ylim 
+# nome dos eixos xlab,ylab
+# titulo main #cor da linha col
+# espessura da linha lwd
+lines(temp_min ~ hora, data = dados, col = "blue",lwd="2") 
+# plota coluna 'c' em relação a 'a' encima do primeiro
+# cor da linha col#espessura da linha lwd 
+mtext("Período de 24 Horas", side=3)
+#texto abaixo do titulo 
+legend("topright",legend=c("Temperatura Máxima (°c)", "Temperatura Mínima (°c)"),col=c("red", "blue"), lty=1:1, cex=0.8, lwd="2")
+#legenda de linhas a esquerdasuperior 
