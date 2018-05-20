@@ -1,0 +1,165 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri May 18 15:37:53 2018
+@author: eberton
+"""
+"""
+Description: A program that plots the Planck-function in a certain interval
+"""
+import numpy as np
+import matplotlib.pyplot as plt
+import math 
+
+pi = 3.14
+n= np.arange(1,365)
+dec=23.45*(np.sin((0.98630*(284+n))*pi/(180)))  
+
+##One Figure
+fig = plt.figure()
+ax = fig.add_subplot(111)
+adjustprops = dict(left=0.10,bottom=0.10,right=0.93,top=0.9)
+fig.subplots_adjust(**adjustprops)
+
+ax.set_xlabel(r'$Dias-Julianos$',size="x-large")
+ax.set_ylabel(r'$Declinação$',size="x-large")
+
+plt.ticklabel_format(style="sci",scilimits=(-24,24),axis="y")
+
+ax.minorticks_on()
+ax.grid()
+ax.plot(n,dec,color="blue",linewidth=3,linestyle="-")
+
+
+#########################################################################################
+#Equação do tempo
+n2= np.linspace(1, 365,365)#n= numero de dias julianos
+tal=2*(np.pi*((n2-1)/(365)))
+equac_temp = (0.000075 + (0.001868*np.cos(tal))-(0.0320077*np.sin(tal))-(0.014615*np.cos(2*(tal))))*1440/(2*pi)
+#print(equac_temp)
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+adjustprops = dict(left=0.10,bottom=0.10,right=0.93,top=0.9)
+fig.subplots_adjust(**adjustprops)
+
+ax.set_xlabel(r'$Dias-Julianos$',size="x-large")
+ax.set_ylabel(r'$Equação-do-Tempo$',size="x-large")
+
+
+plt.ticklabel_format(style="sci",scilimits=(-3,3),axis="y")
+
+ax.minorticks_on()
+ax.grid()
+ax.plot(n2,equac_temp,color="blue",linewidth=3,linestyle="-")
+
+fig.show()
+
+##########################################################################################
+##Angulos horarios do nascer e por do sol
+##n= numero de dias julianos
+##para o dia 99 dia do nascimento
+
+m= 30 
+lat=(-30)
+n3= np.arange(1,365)
+dec2=23.45*(np.sin((0.98630*(284+n3))*pi/(180)))  
+
+#VER ESTA FUNÇÂO
+#H =(math.acos(math.cos(math.tan(lat) * math.tan(dec2)))*180/(pi))
+
+#print(H)
+
+fig = plt.figure()
+ax = fig.add_subplot(111)
+adjustprops = dict(left=0.10,bottom=0.10,right=0.93,top=0.9)
+fig.subplots_adjust(**adjustprops)
+
+ax.set_xlabel(r'$Dias-Julianos$',size="x-large")
+ax.set_ylabel(r'$Angulo-Horario$',size="x-large")
+
+
+plt.ticklabel_format(style="sci",scilimits=(-130,130),axis="y")
+
+ax.minorticks_on()
+ax.grid()
+ax.plot(n3,color="blue",linewidth=3,linestyle="-")
+
+
+
+
+
+
+
+#---------------------DATA------------------------
+#Note: in SI units
+h = 6.626e-34
+c = 3.0e+8
+k = 1.38e-23
+b = 5.67e-8
+#variaveis sao comprimento de onda e temperatura
+#-------------------------------------------------
+def planck(onda, T):
+    a = 2.0*h*c**2 #parte de cima
+    b = h*c/(onda*k*T)
+    intensity = a/ ( (onda**5) * (np.exp(b) - 1.0) )
+    return intensity
+
+#------------Figure Layout--------------
+##One Figure
+fig = plt.figure()
+ax = fig.add_subplot(111)
+adjustprops = dict(left=0.10,bottom=0.10,right=0.93,top=0.9,wspace=0.,hspace=0.2)
+fig.subplots_adjust(**adjustprops)
+
+ax.set_xlabel(r'$\lambda \, [nm]$',size="x-large")
+ax.set_ylabel(r'$B_{\lambda} \, [\mathrm{W \, m^{-2} \, nm^{-1} \, sr^{-1}}]$',size="x-large")
+#ax.set_xlim()
+
+plt.ticklabel_format(style="sci",scilimits=(2,2),axis="y")
+
+ax.minorticks_on()
+ax.grid()
+
+onda = np.linspace(1,4000,2000)
+spec_7000 = planck(onda*1e-9,7000)/10**9 #dividing by 10**9 to get nm^-1 in units
+spec_6000 = planck(onda*1e-9,6000)/10**9 #dividing by 10**9 to get nm^-1 in units
+spec_5000 = planck(onda*1e-9,5000)/10**9 #dividing by 10**9 to get nm^-1 in units
+spec_4000 = planck(onda*1e-9,4000)/10**9 #dividing by 10**9 to get nm^-1 in units
+#PLOT
+ax.plot(onda,spec_7000,color="blue",linewidth=3,linestyle="-",label=r"$T_1=7000 \, \mathrm{K}$")
+ax.plot(onda,spec_6000,color="red",linewidth=3,linestyle="-",label=r"$T_2=6000 \, \mathrm{K}$")
+ax.plot(onda,spec_5000,color="green",linewidth=3,linestyle="-",label=r"$T_3=5000 \, \mathrm{K}$")
+ax.plot(onda,spec_4000,color="yellow",linewidth=3,linestyle="-",label=r"$T_4=4000 \, \mathrm{K}$")
+#-------------------------GRAPHICS
+plt.legend(loc='upper right')
+
+#SAVING
+fig.show()
+
+fig.savefig("planck.png")
+
+#intensidade radiante total de um corpo negro 
+# ver unidade
+def boltzmann(T): #w/m2
+    intensity = b*T**4 
+    return intensity
+
+T = np.linspace(1,6000,50)# se quiser so um valor usar 1 no lugar de 50 
+
+#Figure
+fig = plt.figure()
+ax = fig.add_subplot(111)
+adjustprops = dict(left=0.10,bottom=0.10,right=0.93,top=0.9,wspace=0.,hspace=1)
+fig.subplots_adjust(**adjustprops)
+
+ax.set_xlabel(r'$Temperatura ,[K]$',size="x-large")
+ax.set_ylabel(r'${Int-Rad-Tot-C.- Negro} \, [\mathrm{W \, m^{-2}}]$',size="x-large")
+
+plt.ticklabel_format(style="sci",scilimits=(2,2),axis="y")
+
+ax.minorticks_on()
+ax.grid()
+ax.plot(T,boltzmann(T),color="blue",linewidth=3,linestyle="-")
+
+#fechando boltsmann
+
